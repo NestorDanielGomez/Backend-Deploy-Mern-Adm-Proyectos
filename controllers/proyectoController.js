@@ -68,7 +68,7 @@ const eliminarProyecto = async (req, res) => {
     const error = new Error("Proyecto No encontrado");
     return res.status(404).json({ msg: error.message });
   }
-  if (proyecto.creador.toString() === req.usuario._id.toString()) {
+  if (proyecto.creador.toString() !== req.usuario._id.toString()) {
     const error = new Error("Accion no valida");
     return res.status(401).json({ msg: error.message });
   }
