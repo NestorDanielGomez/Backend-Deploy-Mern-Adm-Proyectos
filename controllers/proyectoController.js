@@ -26,18 +26,12 @@ const obtenerProyecto = async (req, res) => {
     const error = new Error("Proyecto No encontrado");
     return res.status(404).json({ msg: error.message });
   }
-  if (proyecto.creador.toString() === req.usuario._id.toString()) {
+  if (proyecto.creador.toString() !== req.usuario._id.toString()) {
     const error = new Error("Accion no valida");
     return res.status(401).json({ msg: error.message });
   }
 
-  //traigo las tareas del proyecto
-  const tareas = await Tarea.find().where("proyecto").equals(proyecto._id);
-
-  res.json({
-    proyecto,
-    tareas,
-  });
+  res.json(proyecto);
 };
 
 const editarProyecto = async (req, res) => {
@@ -48,7 +42,7 @@ const editarProyecto = async (req, res) => {
     const error = new Error("Proyecto No encontrado");
     return res.status(404).json({ msg: error.message });
   }
-  if (proyecto.creador.toString() === req.usuario._id.toString()) {
+  if (proyecto.creador.toString() !== req.usuario._id.toString()) {
     const error = new Error("Accion no valida");
     return res.status(401).json({ msg: error.message });
   }
@@ -90,8 +84,6 @@ const agregarColaborador = async (req, res) => {};
 
 const eliminarColaborador = async (req, res) => {};
 
-
-
 export {
   obtenerProyectos,
   nuevoProyecto,
@@ -100,5 +92,4 @@ export {
   eliminarProyecto,
   agregarColaborador,
   eliminarColaborador,
-
 };
