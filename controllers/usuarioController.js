@@ -5,6 +5,7 @@ import { emailRegistro, emailOlvidePassword } from "../helpers/email.js";
 
 const crearUsuario = async (req, res) => {
   // evito correos duplicados
+  console.log(req.body);
   const { email } = req.body;
   const existeUsusario = await Usuario.findOne({ email });
 
