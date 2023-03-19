@@ -79,14 +79,38 @@ const eliminarTarea = async (req, res) => {
     res.status(403).json({ msg: error.message });
   }
   try {
-    await tarea.deleteOne();
+    const proyecto = await Proyecto.findById(tarea.proyecto);
+    proyecto.tareas.pull(tarea._id);
+
+    await Promise.allSettled([await proyecto.save(), await tarea.deleteOne()]);
+
     res.json({ msg: `La tarea "${tarea.nombre}" fue borrada con exito` });
   } catch (error) {
     console.log(error);
   }
 };
 
-const cambiarEstadoTarea = async (req, res) => {};
+const cambiarEstadoTarea = async (req, res) => {
+  const { id } = req.params;
+  const tarea = await Tarea.findById(id).populate("proyecto");
+
+  if (!tarea) {
+    const error = new Error("La tarea no existe");
+    res.status(404).json({ msg: error.message });
+  }
+  if (
+    tarea.proyecto.creador.toString() !== req.usuario._id.toString() &&
+    !tarea.proyecto.colaboradores.some(
+      (colaborador) => colaborador._id.toString() === req.usuario._id.tostring()
+    )
+  ) {
+    const error = new Error("Accion no valida");
+    res.status(403).json({ msg: error.message });
+  }
+  tarea.estado = !tarea.estado;
+  await tarea.save();
+  res.json(tarea);
+};
 
 export {
   agregarTarea,
