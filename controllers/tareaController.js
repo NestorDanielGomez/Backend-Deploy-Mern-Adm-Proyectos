@@ -93,7 +93,8 @@ const eliminarTarea = async (req, res) => {
 const cambiarEstadoTarea = async (req, res) => {
   const { id } = req.params;
   const tarea = await Tarea.findById(id).populate("proyecto");
-
+  console.log("id", id);
+  console.log("tarea", tarea);
   if (!tarea) {
     const error = new Error("La tarea no existe");
     res.status(404).json({ msg: error.message });
@@ -101,7 +102,7 @@ const cambiarEstadoTarea = async (req, res) => {
   if (
     tarea.proyecto.creador.toString() !== req.usuario._id.toString() &&
     !tarea.proyecto.colaboradores.some(
-      (colaborador) => colaborador._id.toString() === req.usuario._id.tostring()
+      (colaborador) => colaborador._id.toString() === req.usuario._id.toString()
     )
   ) {
     const error = new Error("Accion no valida");
@@ -109,8 +110,8 @@ const cambiarEstadoTarea = async (req, res) => {
   }
   tarea.estado = !tarea.estado;
   tarea.completado = req.usuario._id;
-
   await tarea.save();
+
   const tareaAlmacenada = await Tarea.findById(id)
     .populate("proyecto")
     .populate("completado");
