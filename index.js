@@ -46,12 +46,13 @@ const io = new Server(servidor, {
 });
 
 io.on("connection", (socket) => {
-  console.log("conectado a socket");
   socket.on("abrir proyecto", (proyecto) => {
     socket.join(proyecto);
   });
+
   socket.on("nueva tarea", (tarea) => {
-    socket.on(tarea.proyecto).emit("tarea agregada", tarea);
+    const proyecto = tarea.proyecto;
+    socket.on(proyecto).emit("tarea agregada", tarea);
   });
   socket.on("eliminar tarea", (tarea) => {
     const proyecto = tarea.proyecto;
