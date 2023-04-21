@@ -6,9 +6,9 @@ Deploy del sitio: [DATA-SEND](https://leafy-alfajores-9590cf.netlify.app)
 
 ### Backend con [NODE.js](https://nodejs.org/en) y [MongoDB](https://www.mongodb.com/).
 
-El usuario se autentica mediante correo electronico, al igual que el cambio de contraseña. Se utiliza mailtrap para autenticar el usuario.
+El usuario se autentica mediante correo electrónico, al igual que el cambio de contraseña. Se utiliza mailtrap para autenticar el usuario.
 
-usuario autenticado para probar el proyecto:
+Usuario autenticado para probar el proyecto:
 `usuario: nestor@nestor123 `
 `contraseña: nestor123`
 
